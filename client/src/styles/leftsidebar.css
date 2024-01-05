@@ -1,0 +1,14 @@
+.leftsidebar{
+    display: grid;
+    grid-template-rows:1fr 8fr;
+    width: 38%;
+    height: 100vh;
+    max-height: 100vh;
+    z-index: 1;
+}
+
+@media only screen and (max-width:800px) {
+    .leftsidebar{
+        width: 100%;
+    }
+}

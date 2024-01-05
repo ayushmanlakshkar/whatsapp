@@ -1,0 +1,56 @@
+.contactfeaturebar{
+    display: grid;
+    background-color: rgb(31,44,51);
+    height: fit-content;
+    grid-template-columns: 1fr 1fr;
+    padding: 0px 10px;
+}
+
+.choosed{
+    background-color: #3c425f;
+    border-radius: 50%;
+}
+
+.hello{
+    display: flex;
+    align-items: center;
+}
+
+.add-options{
+    display: grid;
+    grid-template-rows: 1fr 1fr ;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.add{
+    padding: 5px;
+    color: aliceblue;
+}
+
+.userlogo{
+   height: 30px;
+}
+
+
+.friend-iconwrapper{
+    color: aliceblue;
+}
+
+.exit-navbar{
+    display: none;
+    color: aliceblue;
+}
+
+.close-icon{
+    padding: 5px;
+}
+@media only screen and (max-width:800px) {
+    .add-options{
+        display: grid;
+        grid-template-columns: 1fr 1fr ;
+        grid-template-rows: 1fr 1fr;
+    }
+    .exit-navbar{
+        display: block;
+    }
+}

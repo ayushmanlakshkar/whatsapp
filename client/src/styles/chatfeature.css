@@ -1,0 +1,36 @@
+.chatfeaturebar{
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+    color: white;
+    border-left: 1px solid rgb(46,59,68);
+    box-sizing: border-box;
+    height: 9%;
+    background-color: rgb(31,44,51);
+    font-size: larger;
+    font-weight: bolder;
+}
+
+.collapse-button{
+    display: none;
+}
+
+.chatfeature-chatname{
+    margin: auto;
+    grid-column-start: 2;
+}
+
+.leave_button{
+    height: 40px;
+    width: fit-content;
+    margin: auto auto;
+}
+
+@media only screen and (max-width: 800px){
+    .collapse-button{
+        display: block;
+        margin: auto;
+        height: 40px;
+        width: 50px;
+    }
+    
+}

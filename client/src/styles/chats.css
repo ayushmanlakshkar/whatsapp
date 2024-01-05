@@ -1,0 +1,8 @@
+.chatpage{
+    display: flex;
+    height: 100%;
+}
+
+.collapse{
+    display:none;
+}

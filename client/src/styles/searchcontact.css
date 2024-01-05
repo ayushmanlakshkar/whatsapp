@@ -1,0 +1,33 @@
+.searchcontact{
+    padding: 10px 0px;
+    display: flex;
+    height: fit-content;
+    justify-content: center;
+}
+
+.searchicon{
+ color: rgb(134,150,160);
+}
+
+.searchbox{
+background-color: rgb(31,44,51);
+    padding: 10px 0px;
+    width: 90%;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.searchinput{
+    background-color: rgb(31,44,51);
+    border: 1px solid rgb(31,44,51);
+    width: 80%;
+    color: aliceblue;
+    font-size: medium;
+}
+
+.searchinput:focus{
+    outline: none;
+    box-shadow: none;
+}
