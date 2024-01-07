@@ -65,7 +65,6 @@ const Contacts = () => {
   const reject_friend_request = async (contactname) => {
     await axios.post('http://localhost:3001/contact/reject_friend', { username: user, friend_request: contactname }).then((response) => {
       socket.emit('accept_reject_friend', { username: user, friend: contactname, acceptance: false });
-      console.log(response.data);
       dispatch(setToastMessage({message: response.data,type:true}))
     }).catch((error) => {
       dispatch(setToastMessage({message:error.resposne.data,type:false}))
@@ -76,7 +75,7 @@ const Contacts = () => {
     await axios.post('http://localhost:3001/contact/add_group', { username: user, groupname: contactname }).then((response) => {
       dispatch(setToastMessage({message: response.data,type:true}))
     }).catch((error) => {
-      dispatch(setToastMessage({message:error.resposne.data,type:false}))
+      dispatch(setToastMessage({message:error.response.data,type:false}))
     })
   }
 

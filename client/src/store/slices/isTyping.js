@@ -7,7 +7,7 @@ const isTypingslice = createSlice({
     },
     reducers:{
         setTyping(state,action){
-            state.status = !state.status;
+            state.status = action.payload
         }
     }
 })

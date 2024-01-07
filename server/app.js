@@ -35,15 +35,15 @@ io.on("connection", (socket) => {
 
     socket.on('user_login', async (req) => {
         await User.updateOne({ username: req.username }, { socket_id: socket.id })
-        console.log('user logged in')
+        console.log(`user logged in ${req.username}`)
 
     })
 
     socket.on("user_online", async (req) => {
         const friends_of_user = await User.findOne({ username: req.username }).populate('friends')
         friends_of_user.friends.forEach(friend => {
-            if(friend.socket_id){
-                socket.to(friend.socket_id).emit("user_online",{user:req.username})
+            if (friend.socket_id) {
+                socket.to(friend.socket_id).emit("user_online", { user: req.username })
             }
         })
     })
@@ -57,7 +57,6 @@ io.on("connection", (socket) => {
         const friend_socket = await User.findOne({ username: req.friend })
         const user_socket = await User.findOne({ username: req.username })
         if (user_socket.socket_id) {
-            console.log(user_socket.socket_id)
             socket.emit("refresh_friend_requests", `U just ${req.acceptance ? "accepted" : "rejected"} ${req.friend}'s request `)
         }
         if (friend_socket.socket_id) {
@@ -75,20 +74,39 @@ io.on("connection", (socket) => {
             }
         }
         else if (req.type === "groups") {
-            // const reciever = await Group.findOne({ Groupname: req.reciever })
-            // socket.broadcast.to(reciever)
+            const reciever = await Group.findOne({ Groupname: req.reciever }).populate('users')
+            reciever.users.map((user)=>{
+                socket.to(user.socket_id).emit("send_message",req)
+            })
         }
     })
+
     socket.on("typing", async (req) => {
-        const reciever = await User.findOne({ username: req.reciever })
-        if (reciever.socket_id) {
-            socket.to(reciever.socket_id).emit("typing", req)
+        if (req.type == "friends") {
+            const reciever = await User.findOne({ username: req.reciever })
+            if (reciever.socket_id) {
+                socket.to(reciever.socket_id).emit("typing",{...req,key:"reserved_typing_key"})
+            }
+        }
+        else if(req.type=="groups"){
+            const reciever = await Group.findOne({ Groupname: req.reciever }).populate('users')
+            reciever.users.map((user)=>{
+                socket.to(user.socket_id).emit("typing",{...req,key:"reserved_typing_key"})
+            })
         }
     })
+
     socket.on("stopped_typing", async (req) => {
-        const reciever = await User.findOne({ username: req.reciever })
-        if (reciever.socket_id) {
-            socket.to(reciever.socket_id).emit("stopped_typing", req)
+        if (req.type == "friends") {
+            const reciever = await User.findOne({ username: req.reciever })
+            if (reciever.socket_id) {
+                socket.to(reciever.socket_id).emit("stopped_typing", {...req,key:"reserved_typing_key"})
+            }
+        }else if(req.type=="groups"){
+            const reciever = await Group.findOne({ Groupname: req.reciever }).populate('users')
+            reciever.users.map((user)=>{
+                socket.to(user.socket_id).emit("stopped_typing",{...req,key:"reserved_typing_key"})
+            })
         }
     })
 
@@ -97,9 +115,9 @@ io.on("connection", (socket) => {
         if (user) {
             await User.findOneAndUpdate({ socket_id: socket.id }, { socket_id: "" })
             const user_friends = await user.populate('friends')
-            user_friends.friends.forEach((friend)=>{
-                if(friend.socket_id){
-                    socket.to(friend.socket_id).emit("user_offline",{user:user.username})
+            user_friends.friends.forEach((friend) => {
+                if (friend.socket_id) {
+                    socket.to(friend.socket_id).emit("user_offline", { user: user.username })
                 }
             })
         }
@@ -110,9 +128,9 @@ io.on("connection", (socket) => {
         if (user) {
             await User.findOneAndUpdate({ socket_id: socket.id }, { socket_id: "" })
             const user_friends = await user.populate('friends')
-            user_friends.friends.forEach((friend)=>{
-                if(friend.socket_id){
-                    socket.to(friend.socket_id).emit("user_offline",{user:user.username})
+            user_friends.friends.forEach((friend) => {
+                if (friend.socket_id) {
+                    socket.to(friend.socket_id).emit("user_offline", { user: user.username })
                 }
             })
         }

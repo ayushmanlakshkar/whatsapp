@@ -18,7 +18,6 @@ const Searchcontact = () => {
     const contactsSet = async (input) => {
         if (friend_req_options.friends) {
             if (!input) {
-                console.log("render")
                 await axios.post('http://localhost:3001/contact/get_mycontacts', { username: user.username }).then((response) => {
                     dispatch(setcontacts(response.data))
                 })
@@ -26,7 +25,6 @@ const Searchcontact = () => {
             else {
                 const filtered_friends = contacts["friends"].filter(contact => contact.name.toLowerCase().startsWith(input.toLowerCase()));
                 const filtered_groups = contacts["groups"].filter(contact => contact.name.toLowerCase().startsWith(input.toLowerCase()));
-                console.log(filtered_friends)
                 dispatch(setcontacts({ friends: filtered_friends, groups: filtered_groups }));
             }
         }
@@ -38,7 +36,6 @@ const Searchcontact = () => {
                 const filtered = contacts["friends"].filter(contact => contact.name.toLowerCase().startsWith(input.toLowerCase()));
                 dispatch(setcontacts({ friends: filtered }));
             }
-
         }
         else if (friend_req_options.add_friend) {
             await axios.post('http://localhost:3001/contact/get_users', { characters: input }).then((response) => {
@@ -50,9 +47,7 @@ const Searchcontact = () => {
                 dispatch(setcontacts({ groups: response.data }))
             })
         }
-        else if (friend_req_options.create_group) {
-            console.log("create group")
-        }
+        
     }
 
     const set_contacts = (e) => {

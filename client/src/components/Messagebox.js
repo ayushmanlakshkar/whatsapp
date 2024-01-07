@@ -9,6 +9,7 @@ import logo from '../img/logo.png'
 const Messagebox = () => {
   const user = useSelector(state => state.user.username)
   const presentChat = useSelector(state => state.presentchat)
+
   const navbar_collapsed = useSelector(state => state.navbar.status)
   const dispatch = useDispatch()
 
@@ -27,8 +28,17 @@ const Messagebox = () => {
 
   useEffect(() => {
     socket.on("send_message", (data) => {
-      dispatch(appendMessages({ username: data.username, key: data.key, message: data.message, timestamp: data.timestamp }));
-    });
+      if(data.type=="friends"){
+        if (data.type == presentChat.type && data.username == presentChat.chatname) {
+          dispatch(appendMessages({ type:data.type,username: data.username, key: data.key, message: data.message, timestamp: data.timestamp }));
+        }
+      }else{
+        if (data.type == presentChat.type && data.reciever == presentChat.chatname) {
+          dispatch(appendMessages({ type:data.type,username: data.username, key: data.key, message: data.message, timestamp: data.timestamp }));
+        }
+      }
+     });
+
     get_messages();
     return () => {
       socket.off("send_message")
@@ -41,10 +51,11 @@ const Messagebox = () => {
       scrollToBottom();
     }
   }, [navbar_collapsed])
-  
+
   useEffect(() => {
     scrollToBottom()
   },[presentChat.messages])
+
   return (
     <div id="messages-container" className='messagebox'>
       {presentChat.messages.map((message) => (

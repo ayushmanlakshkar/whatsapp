@@ -27,7 +27,6 @@ const Contactscroll = () => {
               </Tabs>
             </Box>
           </ThemeProvider> : <></>}
-
           <Contacts /></>
         : <CreateGroup />}
     </div>

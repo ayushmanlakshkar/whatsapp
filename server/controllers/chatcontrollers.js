@@ -51,7 +51,7 @@ const send_Message = async (req, res) => {
         res.send(rearrange_message)
     } else if (req.body.type === "groups") {
         const sender = await User.findOne({ username: req.body.username })
-        const group = await User.findOne({ username: req.body.chatname })
+        const group = await Group.findOne({ Groupname: req.body.chatname })
        const message = await Messages.create({
             message: req.body.message,
             sender: sender._id,

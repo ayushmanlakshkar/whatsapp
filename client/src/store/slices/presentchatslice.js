@@ -1,3 +1,4 @@
+import { Satellite } from "@mui/icons-material";
 import { createSlice } from "@reduxjs/toolkit";
 
 const presentchatslice = createSlice({
@@ -18,9 +19,10 @@ const presentchatslice = createSlice({
         appendMessages(state,action){
             state.messages.push(action.payload)
         },
-        removeMessage(state,action){
-            state.messages.pop()
-        }
+        removeMessage(state, action) {
+            state.messages = state.messages.filter((message) => message.key !== action.payload);
+          }
+          
     }
 })
 
