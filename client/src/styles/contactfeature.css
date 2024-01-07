@@ -11,9 +11,21 @@
     border-radius: 50%;
 }
 
+.logout_button{
+    color: aliceblue;
+   padding: 5px;
+}
+
 .hello{
     display: flex;
     align-items: center;
+    color: aliceblue;
+}
+
+.client-username{
+    font-size: larger;
+    font-weight: bold;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .add-options{
@@ -44,6 +56,7 @@
 .close-icon{
     padding: 5px;
 }
+
 @media only screen and (max-width:800px) {
     .add-options{
         display: grid;

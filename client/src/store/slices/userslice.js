@@ -11,7 +11,7 @@ const userslice = createSlice({
             if(action.payload.username){
                 state.username = action.payload.username
             }
-            else if(action.payload.friend_requests){
+            if(action.payload.friend_requests){
                 state.friend_requests = [...action.payload.friend_requests]
             }
         }

@@ -2,17 +2,27 @@ import './App.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { connect_socket } from './socket-connection/socket';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Authentication from './components/Authentication';
 import Chats from './components/Chats';
+import Unauthorized from './components/Unauthorized';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
  const islogged = useSelector(state => state.islogged.status);
+
  useEffect(() =>{
    connect_socket()
  })
+
   return (
     <div className='app'>
-       {islogged?<Chats/>:<Authentication/>}
+      <Router>
+        <Routes>
+          <Route path='/' element={<Authentication />} />
+          <Route path='/:username' element={<ProtectedRoute path='/:username' Component={<Chats />} />} />
+        </Routes>
+      </Router>
     </div>  
     );
 }

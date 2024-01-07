@@ -71,6 +71,7 @@ const Searchcontact = () => {
         socket.on('refresh_friend_requests', (d) => {
             set_friendrequest()
         })
+
         socket.on("refresh_friends", () => {
             contactsSet()
         })

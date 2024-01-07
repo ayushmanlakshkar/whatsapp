@@ -10,15 +10,20 @@ const send_friendrequest = async (req, res) => {
     if (isAlreadyfriends) {
         res.status(400).send(`You are already friends with ${req.body.reciever}`)
     } else {
-        if (!isRequestAlreadyExists && !isRequestRecieved) {
-            await User.updateOne({ _id: reciever }, { $push: { friend_requests: sender } })
-            res.send(`Request sent to ${req.body.reciever}`)
+        if(!sender==reciever) {
+            if (!isRequestAlreadyExists && !isRequestRecieved) {
+                await User.updateOne({ _id: reciever }, { $push: { friend_requests: sender } })
+                res.send(`Request sent to ${req.body.reciever}`)
+            }
+            else if (isRequestAlreadyExists) {
+                res.status(400).send(`Already sent friend request to ${req.body.reciever}`)
+            } else if (isRequestRecieved) {
+                res.status(400).send(`U already recieved friend request from ${req.body.reciever}`)
+            }
+        }else{
+            res.status(400).send("Cannot send friend request to yourself")
         }
-        else if (isRequestAlreadyExists) {
-            res.status(400).send(`Already sent friend request to ${req.body.reciever}`)
-        } else if (isRequestRecieved) {
-            res.status(400).send(`U already recieved friend request from ${req.body.reciever}`)
-        }
+        
     }
 }
 
@@ -43,7 +48,7 @@ const reject_friend = async (req, res) => {
     const isRequestExists = userid.friend_requests.some(userrequest => userrequest.equals(friend_requestid._id))
     if (isRequestExists) {
         await User.updateOne({ _id: userid }, { $pull: { friend_requests: friend_requestid._id } })
-        res.send(`Rejected friend request of ${req.body.friend}`)
+        res.send(`Rejected friend request of ${req.body.friend_request}`)
     } else {
         res.status(400).send("Already rejected or does not exist")
     }
@@ -54,7 +59,7 @@ const remove_friend = async (req, res) => {
     const friendid = await User.findOne({ username: req.body.friend })
     await User.updateOne({ _id: friendid }, { $pull: { friends: userid._id } })
     await User.updateOne({ _id: userid }, { $pull: { friends: friendid._id } })
-    res.send("removed friend")
+    res.send(`Removed friend : ${req.body.friend}`)
 }
 
 const add_group = async (req, res) => {
@@ -76,11 +81,16 @@ const add_group = async (req, res) => {
 }
 
 const leave_group = async (req, res) => {
+    try {
     const groupid = await Group.findOne({ Groupname: req.body.groupname })
     const userid = await User.findOne({ username: req.body.username }).populate('groups')
-    await User.updateOne({ _id: userid }, { $pull: { groups: groupid._id } })
-    await Group.updateOne({ _id: groupid }, { $pull: { users: userid._id } })
-    res.send("group left")
+    await User.findOneAndUpdate({ _id: userid }, { $pull: { groups: groupid._id } })
+    await Group.findOneAndUpdate({ _id: groupid }, { $pull: { users: userid._id } })
+    res.send(`you left group ${req.body.groupname}`)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+    
 }
 
 const getGroups = async (req, res) => {

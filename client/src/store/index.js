@@ -8,6 +8,7 @@ import navbarslicereducer from './slices/navbarslice';
 import readingslicereducer from './slices/reading';
 import presentchatreducer from './slices/presentchatslice';
 import isTypingreducer from './slices/isTyping';
+import toastReducer from './slices/toastSlice';
 
 const store = configureStore({
   reducer: {
@@ -19,7 +20,8 @@ const store = configureStore({
     navbar : navbarslicereducer,
     reading : readingslicereducer,
     presentchat: presentchatreducer,
-    isTyping:isTypingreducer
+    isTyping:isTypingreducer,
+    toast: toastReducer
   },
 });
 

@@ -56,7 +56,6 @@ io.on("connection", (socket) => {
     socket.on("accept_reject_friend", async (req) => {
         const friend_socket = await User.findOne({ username: req.friend })
         const user_socket = await User.findOne({ username: req.username })
-        console.log(req)
         if (user_socket.socket_id) {
             console.log(user_socket.socket_id)
             socket.emit("refresh_friend_requests", `U just ${req.acceptance ? "accepted" : "rejected"} ${req.friend}'s request `)
@@ -67,7 +66,6 @@ io.on("connection", (socket) => {
             }
         }
     })
-
 
     socket.on("send_message", async (req) => {
         if (req.type === "friends") {
@@ -93,10 +91,24 @@ io.on("connection", (socket) => {
             socket.to(reciever.socket_id).emit("stopped_typing", req)
         }
     })
+
+    socket.on("user_logout", async (req) => {
+        const user = await User.findOne({ socket_id: socket.id })
+        if (user) {
+            await User.findOneAndUpdate({ socket_id: socket.id }, { socket_id: "" })
+            const user_friends = await user.populate('friends')
+            user_friends.friends.forEach((friend)=>{
+                if(friend.socket_id){
+                    socket.to(friend.socket_id).emit("user_offline",{user:user.username})
+                }
+            })
+        }
+    })
+
     socket.on('disconnect', async () => {
         const user = await User.findOne({ socket_id: socket.id })
         if (user) {
-            const newu = await User.findOneAndUpdate({ socket_id: socket.id }, { socket_id: "" })
+            await User.findOneAndUpdate({ socket_id: socket.id }, { socket_id: "" })
             const user_friends = await user.populate('friends')
             user_friends.friends.forEach((friend)=>{
                 if(friend.socket_id){

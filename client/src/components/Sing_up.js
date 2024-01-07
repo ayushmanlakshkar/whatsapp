@@ -7,6 +7,10 @@ import '../styles/login.css'
 import { setuser_details } from '../store/slices/userslice';
 import { setstatus } from '../store/slices/isloggedslice';
 import { setcontacts } from '../store/slices/contactslice';
+import { ToastContainer } from 'react-toastify';
+import { setToastMessage } from '../store/slices/toastSlice';
+import { useNavigate } from 'react-router-dom';
+
 
 const Sing_up = () => {
   const user = useSelector((state) => state.user.username)
@@ -14,16 +18,22 @@ const Sing_up = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmpassword, setConfirmpassword] = useState('')
+  const navigate = useNavigate()
 
   const submit = async (e) => {
     e.preventDefault();
-    dispatch(setuser_details(username))
-    dispatch(setstatus(true))
-    // dispatch(setcontacts(username))
-    // await axios.post('http://localhost:3001/register', { username, password, confirmpassword }).then(() => {
-    // }).catch(() => {
-    //   console.log('cannot find')
-    // });
+    await axios.post('http://localhost:3001/auth/register', { username, password, confirmpassword }).then((response) => {
+      localStorage.setItem('token', response.data.token)   
+      navigate(`/${username}`)
+      dispatch(setToastMessage({message:response.data.message,type:true}))
+    }).catch((error) => {
+      if (error.response.data.validationErrors) {
+        const value = Object.values(error.response.data.validationErrors)[0]
+        dispatch(setToastMessage({ message: value, type: false }))
+      } else {
+        dispatch(setToastMessage({ message: error.response.data, type: false }))
+      }
+    });
   }
 
   return (

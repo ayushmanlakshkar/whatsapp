@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/contacts.css';
 import logo from '../img/logo.png';
-import { setuser_details } from '../store/slices/userslice';
 import { socket } from '../socket-connection/socket';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@mui/material';
@@ -13,6 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { setChatname } from '../store/slices/presentchatslice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setToastMessage } from '../store/slices/toastSlice';
 
 
 const Contacts = () => {
@@ -43,95 +43,40 @@ const Contacts = () => {
   let { key, message } = set_key();
   let [temporary_contacts, setTemporary_contacts] = useState([])
 
-  
+
   const send_friendrequest = async (contactname) => {
     await axios.post('http://localhost:3001/contact/send_friendrequest', { sender: user, reciever: contactname }).then((response) => {
       socket.emit('send_friend_request', { sender: user, reciever: contactname });
-      toast.success(response.data, {
-        position: "top-center",
-        autoClose: 2000,
-        progress: undefined,
-        theme: "dark",
-        })
+      dispatch(setToastMessage({message: response.data,type:true}))
     }).catch((error) => {
-      toast.error(error.response.data, {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "dark",
-        })
-    });
+      dispatch(setToastMessage({message:error.response.data,type:false}))
+    })
   };
 
   const accept_friend_request = async (contactname) => {
     await axios.post('http://localhost:3001/contact/accept_friend', { username: user, friend: contactname }).then((response) => {
       socket.emit('accept_reject_friend', { username: user, friend: contactname, acceptance: true });
-      toast.success(response.data, {
-        position: "top-center",
-        autoClose: 2000,
-        progress: undefined,
-        theme: "dark",
-        })
+      dispatch(setToastMessage({message: response.data,type:true}))
     }).catch((error) => {
-      toast.error(error.response.data, {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "dark",
-        })
-    });
+      dispatch(setToastMessage({message:error.resposne.data,type:false}))
+    })
   };
 
   const reject_friend_request = async (contactname) => {
     await axios.post('http://localhost:3001/contact/reject_friend', { username: user, friend_request: contactname }).then((response) => {
       socket.emit('accept_reject_friend', { username: user, friend: contactname, acceptance: false });
-      toast.success(response.data, {
-        position: "top-center",
-        autoClose: 2000,
-        progress: undefined,
-        theme: "dark",
-        })
+      console.log(response.data);
+      dispatch(setToastMessage({message: response.data,type:true}))
     }).catch((error) => {
-      toast.error(error.response.data, {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "dark",
-        })
-    });
+      dispatch(setToastMessage({message:error.resposne.data,type:false}))
+    })
   };
 
   const join_group = async (contactname) => {
     await axios.post('http://localhost:3001/contact/add_group', { username: user, groupname: contactname }).then((response) => {
-      toast.success(response.data, {
-        position: "top-center",
-        autoClose: 2000,
-        progress: undefined,
-        theme: "dark",
-        })
+      dispatch(setToastMessage({message: response.data,type:true}))
     }).catch((error) => {
-      toast.error(error.response.data, {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "dark",
-        })
+      dispatch(setToastMessage({message:error.resposne.data,type:false}))
     })
   }
 
@@ -141,7 +86,7 @@ const Contacts = () => {
       setTemporary_contacts((prevContacts) => {
         return prevContacts.map((contact) =>
           contact.name === data.user
-            ? { ...contact, isOnline: !contact.isOnline }
+            ? { ...contact, isOnline: true }
             : contact
         );
       });
@@ -151,7 +96,7 @@ const Contacts = () => {
       setTemporary_contacts((prevContacts) => {
         return prevContacts.map((contact) =>
           contact.name === data.user
-            ? { ...contact, isOnline: !contact.isOnline }
+            ? { ...contact, isOnline: false }
             : contact
         );
       });
@@ -159,6 +104,7 @@ const Contacts = () => {
 
     return () => {
       socket.off("user_online");
+      socket.off("user_offline");
     };
 
   }, [])
@@ -180,14 +126,14 @@ const Contacts = () => {
               <span className='accept_reject'>
                 <Button variant="contained" color="success" onClick={() => send_friendrequest(contact.name)}>
                   <AddIcon />
-                </Button><ToastContainer />
+                </Button>
               </span>
               : <></>}
             {friend_req_options.add_group ?
               <span className='accept_reject'>
                 <Button variant="contained" color="success" onClick={() => join_group(contact.name)}>
                   JOIN
-                </Button><ToastContainer /></span>
+                </Button></span>
               : <></>}
             {friend_req_options.friend_req ?
               <span className='accept_reject'>
