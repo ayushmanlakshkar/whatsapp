@@ -5,6 +5,7 @@ const presentchatslice = createSlice({
     name:"presentchat",
     initialState:{
         chatname:"",
+        profilePic:"",
         type:"",
         messages:[]
     },
@@ -12,6 +13,7 @@ const presentchatslice = createSlice({
         setChatname(state,action){
             state.chatname = action.payload.chatname
             state.type = action.payload.type
+            state.profilePic = action.payload.profilePic
         },
         setMessages(state,action){
             state.messages=[...action.payload]

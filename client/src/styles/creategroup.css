@@ -23,3 +23,33 @@
     outline: none;
     box-shadow: none;
 }
+
+.profile_group{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.profile_picture_group{
+    background-color: #1F2C33;
+    height: 20px;
+    padding: 8px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.profile_picture_group:hover{
+    cursor: pointer;
+background-color: #3C425F;
+}
+
+.image_shower_group{
+    display: inline;
+    width: 130px;
+    margin: 0px auto;
+    height: 130px;
+    border-radius: 50%;
+}

@@ -1,9 +1,11 @@
-// utils/timeFormatter.js
 const { format } = require('date-fns');
 
 const formatTimestamp = (timestamp) => {
   const date = new Date(timestamp);
-  return format(date, 'dd/MM/yyyy     HH:mm a', { useAdditionalDayOfYearTokens: true });
+  const formattedDate = format(date, 'dd/MM/yyyy');
+  const formattedTime = format(date, 'HH:mm a');
+
+  return {date: formattedDate, time: formattedTime};
 };
 
 module.exports = { formatTimestamp };

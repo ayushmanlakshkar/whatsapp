@@ -7,29 +7,56 @@ import IconButton from '@mui/material/IconButton';
 import { setTyping } from '../store/slices/isTyping';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { setToastMessage } from '../store/slices/toastSlice';
 import '../styles/messagebar.css'
 
 const Messagebar = () => {
   const [message, setMessage] = useState('')
+  const [image, setImage] = useState(null)
   const user = useSelector(state => state.user.username)
   const presentChat = useSelector(state => state.presentchat)
   const isTyping = useSelector(state => state.isTyping.status)
   const dispatch = useDispatch()
 
-
+  console.log(image)
   const send_message = () => {
-    axios.post('http://localhost:3001/chats/send_message', { type: presentChat.type, message: message, username: user, chatname: presentChat.chatname }).then(async (response) => {
-      setMessage("")
-      dispatch(appendMessages(response.data))
-      socket.emit('send_message', {
-        type: presentChat.type,
-        reciever: presentChat.chatname,
-        key: response.data.key,
-        username: response.data.username,
-        message: response.data.message,
-        timestamp: response.data.timestamp
-      })
-    });
+    if (message||image) {
+      const formData = new FormData();
+      const dataObject = {
+        'type': presentChat.type,
+        'message': message,
+        'image': image,
+        'username': user,
+        'chatname': presentChat.chatname
+      };
+
+      Object.entries(dataObject).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      axios.post('http://localhost:3001/chats/send_message', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      }).then(async (response) => {
+        setMessage("")
+        setImage(null)
+        dispatch(appendMessages(response.data))
+        socket.emit('send_message', {
+          type: presentChat.type,
+          reciever: presentChat.chatname,
+          key: response.data.key,
+          username: response.data.username,
+          image: response.data.image,
+          message: response.data.message,
+          timestamp: response.data.timestamp
+        })
+      });
+    } else {
+      dispatch(setToastMessage({ message: "Type a message to send", type: false }))
+    }
+
   }
 
 
@@ -70,12 +97,13 @@ const Messagebar = () => {
       }
 
     })
-
     return () => {
       socket.off("typing")
       socket.off("stopped_typing")
     }
   })
+
+
 
   useEffect(() => {
     sendTypingEvent();
@@ -83,12 +111,18 @@ const Messagebar = () => {
 
   return (
     <div className='msgbar'>
-      <IconButton >
+      <label className='image_label' htmlFor="image_input">
         <AttachFileIcon style={{ color: 'white' }} />
-        <input type='file' style={{ display: 'none' }} />
-      </IconButton>
+        <input
+          type="file"
+          id="image_input"
+          accept="image/*"
+          onChange={(e) => { setImage(e.target.files[0]) }}
+          style={{ display: 'none' }}
+        />
+      </label>
+      {image ? <CancelIcon className='cancel_image' onClick={() => setImage(null)} /> : ''}
       <input className='msginput' value={message} onChange={(e) => { setMessage(e.target.value) }}
-
         onKeyDown={(e) => e.key == 'Enter' ? send_message() : <></>} placeholder='Message' />
       <IconButton onClick={() => send_message()}>
         <SendIcon style={{ color: 'white' }} />

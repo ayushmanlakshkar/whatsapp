@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/contacts.css';
-import logo from '../img/logo.png';
 import { socket } from '../socket-connection/socket';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from '@mui/material';
@@ -79,6 +78,11 @@ const Contacts = () => {
     })
   }
 
+const logo_url = (base_url)=>{
+   const logoURL= `http://localhost:3001/`+ base_url.substring(7)
+    return logoURL
+}
+
 
   useEffect(() => {
     socket.on("user_online", (data) => {
@@ -116,11 +120,10 @@ const Contacts = () => {
     <div className='contact-list'>
       {temporary_contacts.length > 0 ? (
         temporary_contacts.map((contact) => (
-          <div className={`contact ${presentChatname == contact.name ? 'chatting' : ''}`} key={contact.name} onClick={() => { { friend_req_options.friends ? dispatch(setChatname({ chatname: contact.name, type: key })) : <></> } }}>
-            <div className='contact-logo'><img src={logo} /></div>
+          <div className={`contact ${presentChatname == contact.name ? 'chatting' : ''}`} key={contact.name} onClick={() => { { friend_req_options.friends ? dispatch(setChatname({ chatname: contact.name, type: key ,profilePic:logo_url(contact.profile)})) : <></> } }}>
+            <div className='contact-logo'><img src={logo_url(contact.profile)} /></div>
             <span className='contact-name'>{contact.name}</span>
             {contact.isOnline && <span className='online-container'> <span className='online-icon'></span><span>online</span> </span>}
-
             {friend_req_options.add_friend ?
               <span className='accept_reject'>
                 <Button variant="contained" color="success" onClick={() => send_friendrequest(contact.name)}>

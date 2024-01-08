@@ -7,6 +7,7 @@ import Authentication from './components/Authentication';
 import Chats from './components/Chats';
 import Unauthorized from './components/Unauthorized';
 import ProtectedRoute from './components/ProtectedRoute';
+import Check from './components/Check';
 
 function App() {
  const islogged = useSelector(state => state.islogged.status);
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Authentication />} />
           <Route path='/:username' element={<ProtectedRoute path='/:username' Component={<Chats />} />} />
+          {/* <Route path='/check' element={<Check/>}/> */}
         </Routes>
       </Router>
     </div>  

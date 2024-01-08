@@ -23,7 +23,7 @@ const Chatfeature = () => {
   }
 
   const reset_presentchat = async () => {
-      dispatch(setChatname({ chatname: '', type: '' }))
+      dispatch(setChatname({ chatname: '', type: '',profile:"" }))
       dispatch(setMessages([]))
   }
   const removeFriend = async () => {

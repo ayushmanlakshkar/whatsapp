@@ -5,8 +5,11 @@ const groupschema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        maxlength: 15,
-        minlength: 6
+        maxlength: 30,
+        minlength: 4
+    },
+    profile:{
+        type: String
     },
     users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User',sparse: true,
     index: true,}]

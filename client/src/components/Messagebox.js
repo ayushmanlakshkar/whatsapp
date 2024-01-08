@@ -4,12 +4,10 @@ import { socket } from '../socket-connection/socket'
 import { useSelector, useDispatch } from 'react-redux'
 import { appendMessages, setMessages } from '../store/slices/presentchatslice'
 import '../styles/messagebox.css'
-import logo from '../img/logo.png'
 
 const Messagebox = () => {
   const user = useSelector(state => state.user.username)
   const presentChat = useSelector(state => state.presentchat)
-
   const navbar_collapsed = useSelector(state => state.navbar.status)
   const dispatch = useDispatch()
 
@@ -26,18 +24,24 @@ const Messagebox = () => {
     }
   };
 
+
+  const image_url = (base_url) => {
+    const imageURL = `http://localhost:3001/` + base_url.substring(7)
+    return imageURL
+  }
+
   useEffect(() => {
     socket.on("send_message", (data) => {
-      if(data.type=="friends"){
+      if (data.type == "friends") {
         if (data.type == presentChat.type && data.username == presentChat.chatname) {
-          dispatch(appendMessages({ type:data.type,username: data.username, key: data.key, message: data.message, timestamp: data.timestamp }));
+          dispatch(appendMessages({ type: data.type, username: data.username, key: data.key, message: data.message,image:data.image, timestamp: data.timestamp }));
         }
-      }else{
+      } else {
         if (data.type == presentChat.type && data.reciever == presentChat.chatname) {
-          dispatch(appendMessages({ type:data.type,username: data.username, key: data.key, message: data.message, timestamp: data.timestamp }));
+          dispatch(appendMessages({ type: data.type, username: data.username, key: data.key, message: data.message,image:data.image, timestamp: data.timestamp }));
         }
       }
-     });
+    });
 
     get_messages();
     return () => {
@@ -47,26 +51,27 @@ const Messagebox = () => {
 
 
   useEffect(() => {
-    if(navbar_collapsed){
+    if (navbar_collapsed) {
       scrollToBottom();
     }
   }, [navbar_collapsed])
 
   useEffect(() => {
     scrollToBottom()
-  },[presentChat.messages])
+  }, [presentChat.messages])
 
   return (
     <div id="messages-container" className='messagebox'>
       {presentChat.messages.map((message) => (
         <div className={`msg ${user === message.username ? "right" : "left"}`} key={message.key}>
-          <div className='logo'><img src={logo} /></div>
+          <div className='logo'><img src={presentChat.profilePic} /></div>
           <div className='msgdetails'>
             {presentChat.type === "friends" ? <></> : <span className='msg-username'>{message.username} </span>}
-            <div className={`msg-content ${message.typing?"typing":""}`}>
-              {message.message}
+            <div className={`msg-content ${message.typing ? "typing" : ""}`}>
+            {message.image && <div className='msg-image'><img src={image_url(message.image)}/></div>}
+            <span className={`msg-message ${user === message.username? "right-msg" : "left-msg"}`}>{message.message}</span>
             </div>
-            <span className='timestamp'>{message.timestamp}</span>
+            <span className='timestamp'>{message.timestamp.date}<br/>{message.timestamp.time}</span>
           </div>
         </div>
       ))}

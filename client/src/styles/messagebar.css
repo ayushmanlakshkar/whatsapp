@@ -1,9 +1,10 @@
 .msgbar{
     display: flex;
     height:9%;
+    justify-content: space-around;
     align-items: center;
     width: auto;
-    padding: 0px 2%;
+    /* padding: 0px 7px; */
     background-color: rgb(28,36,39);
 }
 
@@ -14,12 +15,29 @@
     border: 1px solid rgb(31,44,51);
     width: 85%;
     height: 60%;
-    margin: 0px 2%;
-    padding: 0px 2%;
+    padding: 0px 10px;
+    margin: 0px 5px;
     color: white;
 }
 
 .msginput:focus{
     outline: none;
     box-shadow: none;
+}
+
+.image_label{
+    padding: 6px;
+    border-radius: 50%;
+}
+
+.image_label:hover{
+    cursor: pointer;
+    background-color: rgb(3,21,31);
+
+}
+
+.cancel_image:hover{
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: rgb(3,21,31);
 }

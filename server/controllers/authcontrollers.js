@@ -7,7 +7,13 @@ const registerUser = async (req, res) => {
         if (req.body.confirmpassword) {
             const userPresent = await User.findOne({ username: req.body.username });
             if (!userPresent) {
-                await User.create({ username: req.body.username, password: req.body.password })
+                let profile;
+                if (req.file) {
+                    profile = req.file.path
+                } else {
+                    profile = 'public/profilePictures/logo.png';
+                }
+                await User.create({ username: req.body.username, password: req.body.password, profile })
                     .then(async (user) => {
                         const token = await user.generateToken();
                         res.send({ message: `User created successfully : ${req.body.username}`, token });
@@ -30,9 +36,9 @@ const loginUser = async (req, res) => {
     if (user) {
         const matchPassword = await bcrypt.compare(req.body.password, user.password)
         if (matchPassword) {
-                const token = await user.generateToken();
-                res.send({ message: "User logged in", token })
-           
+            const token = await user.generateToken();
+            res.send({ message: "User logged in", token })
+
         } else {
             res.status(400).send("Incorrect Password")
         }

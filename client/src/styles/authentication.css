@@ -9,9 +9,11 @@
 }
 
 .middle {
+  display: flex;
+  flex-direction: column;
   position: fixed;
-  height: 80vh;
-  width: 60vw;
+  height: 85vh;
+  width: 70vw;
   background-color: #ffffff;
   top: 50%;
   left: 50%;
@@ -19,18 +21,16 @@
 }
 
 .options {
-  padding: 45px 0px;
+  padding: 7% 0px;
 }
 
 .form {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   height: 70%;
   width: 90%;
   position: relative;
   left: 50%;
   transform: translate(-50%, 0%);
-  
+  margin: auto 0px;
+padding: 20px 0px;
 }

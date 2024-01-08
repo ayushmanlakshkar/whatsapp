@@ -10,18 +10,51 @@ import '../styles/creategroup.css'
 const CreateGroup = () => {
     const dispatch = useDispatch()
     const [groupname, setGroupname] = useState("")
+    const [profile, setProfile] = useState(null)
     const [error, setError] = useState("")
-    const user = useSelector(state=>state.user.username)
+    const user = useSelector(state => state.user.username)
+
     const create_group = async () => {
-        await axios.post('http://localhost:3001/contact/create_group', { username:user , groupname: groupname }).then((response) => {
-          dispatch(setToastMessage({message:response.data,type:true}))
+        const formData = new FormData()
+        formData.append('username', user)
+        formData.append('groupname', groupname)
+        formData.append('profile', profile)
+
+        await axios.post('http://localhost:3001/contact/create_group', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then((response) => {
+            dispatch(setToastMessage({ message: response.data, type: true }))
+            setProfile(null)
+            setGroupname('')
         }).catch((error) => {
-            dispatch(setToastMessage({message:error.response.data,type:false}))
+            dispatch(setToastMessage({ message: error.response.data, type: false }))
         })
     }
     return (
         <div className='create-group-container'>
-            <input className='create-group-input' value={groupname} onChange={(e) => setGroupname(e.target.value)} />
+            <div className='profile_group'>
+                {profile && (
+                    <img
+                        src={URL.createObjectURL(profile)}
+                        alt="Profile"
+                        className='image_shower_group'
+                    />
+                )}
+                <label className='profile_picture_group' htmlFor="profile-input-group">
+                    Choose Group Profile
+                    <input
+                        type="file"
+                        id="profile-input-group"
+                        accept="image/*"
+                        onChange={(e) => setProfile(e.target.files[0])}
+                        style={{ display: 'none' }}
+                    />
+                </label>
+
+            </div>
+            <input className='create-group-input' value={groupname} placeholder='Group Name' onChange={(e) => setGroupname(e.target.value)} />
             <Button variant="contained" color="success" onClick={create_group}>
                 Create Group
             </Button>

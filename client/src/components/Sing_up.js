@@ -10,6 +10,7 @@ import { setcontacts } from '../store/slices/contactslice';
 import { ToastContainer } from 'react-toastify';
 import { setToastMessage } from '../store/slices/toastSlice';
 import { useNavigate } from 'react-router-dom';
+import { setchat } from '../store/slices/chatslice';
 
 
 const Sing_up = () => {
@@ -18,11 +19,23 @@ const Sing_up = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmpassword, setConfirmpassword] = useState('')
+  const [profile,setProfile] = useState(null)
   const navigate = useNavigate()
 
   const submit = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:3001/auth/register', { username, password, confirmpassword }).then((response) => {
+
+    const formData=new FormData()
+    formData.append('username', username)
+    formData.append('password', password)
+    formData.append('confirmpassword',confirmpassword)
+    formData.append('profile',profile)
+
+    await axios.post('http://localhost:3001/auth/register', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    }).then((response) => {
       localStorage.setItem('token', response.data.token)   
       navigate(`/${username}`)
       dispatch(setToastMessage({message:response.data.message,type:true}))
@@ -38,11 +51,30 @@ const Sing_up = () => {
 
   return (
     <Box id='box' component='form' onSubmit={submit}>
-      <Avatar src="/broken-image.jpg" sx={{ width: 56, height: 56 }} />
+      <div className='profile'>
+      {profile && (
+        <img
+          src={URL.createObjectURL(profile)}
+          alt="Profile"
+          className='image_shower'
+        />
+      )}
+     <label className='profile_picture' htmlFor="profile-input">
+        Choose profile picture
+        <input
+          type="file"
+          id="profile-input"
+          accept="image/*"
+          onChange={(e)=>setProfile(e.target.files[0])}
+          style={{ display: 'none' }}
+        />
+      </label>
+      
+      </div>
       <TextField fullWidth label="Username" className='input' value={username} onChange={(e) => { setUsername(e.target.value) }} />
       <TextField fullWidth type='password' label="Password" className='input' value={password} onChange={(e) => { setPassword(e.target.value) }} />
       <TextField fullWidth type='password' label="Confirm Password" className='input' value={confirmpassword} onChange={(e) => { setConfirmpassword(e.target.value) }} />
-      <Button type='submit' variant="contained">Log IN</Button>
+      <Button type='submit' variant="contained">Sing Up</Button>
     </Box>
   )
 }

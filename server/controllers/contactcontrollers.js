@@ -97,7 +97,7 @@ const getGroups = async (req, res) => {
     let groupnames = []
     if (req.body.characters) {
         const groups = await Group.find({ Groupname: { $regex: `^${req.body.characters}`, $options: 'i' } });
-        groupnames = groups.map(group => ({ name: group.Groupname }));
+        groupnames = groups.map(group => ({ name: group.Groupname, profile: group.profile}));
         res.send(groupnames)
     }
     else {
@@ -109,7 +109,7 @@ const getUsers = async (req, res) => {
     let usernames = []
     if (req.body.characters) {
         const users = await User.find({ username: { $regex: `^${req.body.characters}`, $options: 'i' } })
-        usernames = users.map(user => ({ name: user.username }));
+        usernames = users.map(user => ({ name: user.username,profile: user.profile}));
         res.send(usernames)
     }
     else {
@@ -119,16 +119,17 @@ const getUsers = async (req, res) => {
 
 const get_mycontacts = async (req, res) => {
     const user = await User.findOne({ username: req.body.username })
-        .populate('friends', 'username socket_id')
-        .populate('groups', 'Groupname');
+        .populate('friends')
+        .populate('groups');
     const friends = user.friends.map(friend => {
         return (
             {
-                name: friend.username
-                , isOnline: friend.socket_id ? true : false
+                name: friend.username,
+                profile: friend.profile,
+                isOnline: friend.socket_id ? true : false
             })
     })
-    const groups = user.groups.map(group => ({ name: group.Groupname }))
+    const groups = user.groups.map(group => ({ name: group.Groupname, profile: group.profile}))
     res.send({ friends: friends, groups: groups })
 
 }
@@ -139,21 +140,27 @@ const create_group = async (req, res) => {
         res.status(400).send("Group already exists")
     } else {
         const groupnameLength = req.body.groupname.length;
-        if (groupnameLength >= 6 && groupnameLength <= 15) {
+        if (groupnameLength >= 4 && groupnameLength <= 30) {
+            let profile;
+                if (req.file) {
+                    profile = req.file.path
+                } else {
+                    profile = 'public/groupPictures/default.png';
+                }
             const user = await User.findOne({ username: req.body.username })
-            const group = await Group.create({ Groupname: req.body.groupname, users: [user._id] })
+            const group = await Group.create({ Groupname: req.body.groupname,profile:profile, users: [user._id] })
             await User.updateOne({ username: req.body.username }, { $push: { groups: group._id } })
             res.send(`Group created with name ${req.body.groupname}`)
         }
         else {
-            res.status(400).send("Groupname length should be between 6 to 15 characters" )
+            res.status(400).send("Groupname length should be between 4 to 30 characters" )
         }
     }
 }
 
 const getFriendrequests = async (req, res) => {
     const user = await User.findOne({ username: req.body.username }).populate('friend_requests')
-    const friendrequests = await user.friend_requests.map(friendRequest => ({ name: friendRequest.username }))
+    const friendrequests = await user.friend_requests.map(friendRequest => ({ name: friendRequest.username,profile:friendRequest.profile }))
     res.send(friendrequests)
 }
 

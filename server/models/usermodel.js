@@ -15,6 +15,10 @@ const userschema = new mongoose.Schema({
         required: [true, "Please enter a password"],
         minlength: [8, 'Password minlength must be at least 8 characters']
     },
+    profile:{
+        type: String,
+    }
+    ,
     socket_id: {
         type: String,
         default: ''

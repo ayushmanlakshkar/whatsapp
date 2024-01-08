@@ -20,6 +20,7 @@ const server = http.createServer(app);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(express.static('public'))
 
 
 const io = new Server(server, {
@@ -155,3 +156,5 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((err) => {
         console.error('MongoDB connection error:', err.message);
     });
+
+    
