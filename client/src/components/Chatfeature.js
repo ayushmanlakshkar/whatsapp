@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { setChatname, setMessages } from '../store/slices/presentchatslice';
 import { setToastMessage} from '../store/slices/toastSlice';
 import { RemoveOneChat } from '../store/slices/contactslice';
+import { BASE_URL } from '../services/Api';
 
 const Chatfeature = () => {
   const iscollapsed = useSelector(state => state.navbar.status)
@@ -27,7 +28,7 @@ const Chatfeature = () => {
       dispatch(setMessages([]))
   }
   const removeFriend = async () => {
-    await axios.post('http://localhost:3001/contact/remove_friend', { username: user, friend: presentChat.chatname })
+    await axios.post(`${BASE_URL}contact/remove_friend`, { username: user, friend: presentChat.chatname })
       .then(async (response) => {
         dispatch(setToastMessage({message: response.data,type:true}))
         dispatch(RemoveOneChat({type:"friends",name:presentChat.chatname}))
@@ -39,7 +40,7 @@ const Chatfeature = () => {
   }
 
   const leaveGroup = async () => {
-    await axios.post('http://localhost:3001/contact/leave_group', { username: user, groupname: presentChat.chatname })
+    await axios.post(`${BASE_URL}contact/leave_group`, { username: user, groupname: presentChat.chatname })
       .then(async (response) => {
        dispatch(setToastMessage({message: response.data,type:true}))
        dispatch(RemoveOneChat({type:"groups",name:presentChat.chatname}))

@@ -3,6 +3,7 @@ import axios from 'axios'
 import { socket } from '../socket-connection/socket'
 import { useSelector, useDispatch } from 'react-redux'
 import { appendMessages, setMessages } from '../store/slices/presentchatslice'
+import { BASE_URL } from '../services/Api'
 import '../styles/messagebox.css'
 
 const Messagebox = () => {
@@ -12,7 +13,7 @@ const Messagebox = () => {
   const dispatch = useDispatch()
 
   const get_messages = async () => {
-    await axios.post('http://localhost:3001/chats/get_messages', { type: presentChat.type, chatname: presentChat.chatname, username: user }).then((response) => {
+    await axios.post(`${BASE_URL}chats/get_messages`, { type: presentChat.type, chatname: presentChat.chatname, username: user }).then((response) => {
       dispatch(setMessages(response.data));
     })
   }
@@ -25,8 +26,8 @@ const Messagebox = () => {
   };
 
 
-  const image_url = (base_url) => {
-    const imageURL = `http://localhost:3001/` + base_url.substring(7)
+  const image_url = (url) => {
+    const imageURL = BASE_URL + url.substring(7)
     return imageURL
   }
 

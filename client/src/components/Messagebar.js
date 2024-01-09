@@ -10,6 +10,7 @@ import SendIcon from '@mui/icons-material/Send';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { setToastMessage } from '../store/slices/toastSlice';
 import '../styles/messagebar.css'
+import { BASE_URL } from '../services/Api';
 
 const Messagebar = () => {
   const [message, setMessage] = useState('')
@@ -35,7 +36,7 @@ const Messagebar = () => {
         formData.append(key, value);
       });
 
-      axios.post('http://localhost:3001/chats/send_message', formData, {
+      axios.post(`${BASE_URL}chats/send_message`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }

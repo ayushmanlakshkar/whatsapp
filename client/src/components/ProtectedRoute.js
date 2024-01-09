@@ -7,6 +7,7 @@ import { setstatus } from '../store/slices/isloggedslice'
 import { setuser_details } from '../store/slices/userslice'
 import { setToastMessage } from '../store/slices/toastSlice'
 import { socket } from '../socket-connection/socket'
+import { BASE_URL } from '../services/Api'
 
 function ProtectedRoute({ Component }) {
     const isLogged = useSelector(state => state.islogged.status)
@@ -18,7 +19,7 @@ function ProtectedRoute({ Component }) {
         const headers = {
             Authorization: 'Bearer ' + token
         }
-        await axios.post('http://localhost:3001/auth/token_login', { username, headers }).then((response) => {
+        await axios.post(`${BASE_URL}auth/token_login`, { username, headers }).then((response) => {
             dispatch(setuser_details({ username }))
             dispatch(setstatus(true))
             socket.emit('user_login', { username })

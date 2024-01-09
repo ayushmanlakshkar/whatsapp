@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const messageschema = new mongoose.Schema({
 message:{
   type:String,
-  required:true,
+  default:''
 },
 image:{
  type:String,

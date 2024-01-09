@@ -2,8 +2,8 @@
     display: grid;
     grid-template-rows:1fr 8fr;
     width: 38%;
-    height: 100vh;
-    max-height: 100vh;
+    height: 100%;
+    max-height: 100%;
     z-index: 1;
     background-color: #111B21;
 }

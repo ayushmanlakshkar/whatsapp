@@ -1,18 +1,18 @@
 .top_half {
   background-color: #04a784;
-  height: 30vh;
+  height: 30%;
 }
 
 .bottom_half {
   background-color: #111b21;
-  height: 70vh;
+  height: 70%;
 }
 
 .middle {
   display: flex;
   flex-direction: column;
   position: fixed;
-  height: 85vh;
+  height: 85%;
   width: 70vw;
   background-color: #ffffff;
   top: 50%;

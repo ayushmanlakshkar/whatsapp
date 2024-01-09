@@ -11,7 +11,7 @@ import { ToastContainer } from 'react-toastify';
 import { setToastMessage } from '../store/slices/toastSlice';
 import { useNavigate } from 'react-router-dom';
 import { setchat } from '../store/slices/chatslice';
-
+import { BASE_URL } from '../services/Api';
 
 const Sing_up = () => {
   const user = useSelector((state) => state.user.username)
@@ -21,6 +21,7 @@ const Sing_up = () => {
   const [confirmpassword, setConfirmpassword] = useState('')
   const [profile,setProfile] = useState(null)
   const navigate = useNavigate()
+  
 
   const submit = async (e) => {
     e.preventDefault();
@@ -31,7 +32,7 @@ const Sing_up = () => {
     formData.append('confirmpassword',confirmpassword)
     formData.append('profile',profile)
 
-    await axios.post('http://localhost:3001/auth/register', formData, {
+    await axios.post(`${BASE_URL}auth/register`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }

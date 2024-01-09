@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import { friend_requests } from '../store/slices/friends_reqslice';
 import { useSelector, useDispatch } from 'react-redux';
 import { setToastMessage } from '../store/slices/toastSlice';
-
+import { BASE_URL } from '../services/Api';
 import '../styles/creategroup.css'
 
 const CreateGroup = () => {
@@ -20,7 +20,7 @@ const CreateGroup = () => {
         formData.append('groupname', groupname)
         formData.append('profile', profile)
 
-        await axios.post('http://localhost:3001/contact/create_group', formData, {
+        await axios.post(`${BASE_URL}contact/create_group`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }

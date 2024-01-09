@@ -6,6 +6,7 @@ import { setcontacts } from '../store/slices/contactslice'
 import { socket } from '../socket-connection/socket';
 import { setuser_details } from '../store/slices/userslice';
 import '../styles/searchcontact.css'
+import { BASE_URL } from '../services/Api';
 
 
 const Searchcontact = () => {
@@ -18,7 +19,7 @@ const Searchcontact = () => {
     const contactsSet = async (input) => {
         if (friend_req_options.friends) {
             if (!input) {
-                await axios.post('http://localhost:3001/contact/get_mycontacts', { username: user.username }).then((response) => {
+                await axios.post(`${BASE_URL}contact/get_mycontacts`, { username: user.username }).then((response) => {
                     dispatch(setcontacts(response.data))
                 })
             }
@@ -38,12 +39,12 @@ const Searchcontact = () => {
             }
         }
         else if (friend_req_options.add_friend) {
-            await axios.post('http://localhost:3001/contact/get_users', { characters: input }).then((response) => {
+            await axios.post(`${BASE_URL}contact/get_users`, { characters: input }).then((response) => {
                 dispatch(setcontacts({ friends: response.data }))
             })
         }
         else if (friend_req_options.add_group) {
-            await axios.post('http://localhost:3001/contact/get_groups', { characters: input }).then((response) => {
+            await axios.post(`${BASE_URL}contact/get_groups`, { characters: input }).then((response) => {
                 dispatch(setcontacts({ groups: response.data }))
             })
         }
@@ -55,7 +56,7 @@ const Searchcontact = () => {
     }
 
     const set_friendrequest = async () => {
-        await axios.post('http://localhost:3001/contact/get_friend_requests', { username: user.username }).then((response) => {
+        await axios.post(`${BASE_URL}contact/get_friend_requests`, { username: user.username }).then((response) => {
             dispatch(setuser_details({ friend_requests: response.data }))
         })
     }

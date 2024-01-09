@@ -1,5 +1,6 @@
 import  io  from "socket.io-client"
-const socket = io.connect('http://localhost:3001')
+import { BASE_URL } from "../services/Api"
+const socket = io.connect(BASE_URL)
 
 const connect_socket = ()=>{
     socket.on("connect",(s)=> {

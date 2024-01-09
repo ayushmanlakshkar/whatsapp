@@ -3,14 +3,14 @@
   flex-direction: column;
   color: aliceblue;
   height: 91%;
-  background-image: url('../img/background.png');
+  background-image: url('/public/img/background.png');
   background-size: contain;
   background-origin: content-box;
   border-left: 1px solid rgb(46, 59, 68);
 }
 
 .backgroundfirst{
-  background-image: url('../img/firstchatpage.png');
+  background-image: url('/public/img/firstchatpage.png');
   /* background-size:contain; */
   background-repeat: no-repeat;
   background-size: cover;
