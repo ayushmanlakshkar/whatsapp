@@ -16,6 +16,8 @@ import { setstatus } from '../store/slices/isloggedslice';
 import { useNavigate } from 'react-router-dom';
 import '../styles/contactfeature.css';
 import { socket } from '../socket-connection/socket';
+import { setreading } from '../store/slices/reading';
+import { setChatname, setMessages } from '../store/slices/presentchatslice';
 
 
 const Contactfeature = () => {
@@ -38,10 +40,15 @@ const Contactfeature = () => {
 
     const handleLogout = () => {
         socket.emit('user_logout')
-        navigate('/')
-        localStorage.removeItem('token')
-        dispatch(setuser_details({ username: "" }))
+        navigate(-1)
+        dispatch(setuser_details({ username: "" ,friend_requests:[],profile:""}))
+        dispatch(setreading("personal"))
+        dispatch(setChatname({chatname:"",profilePic:"",type:""}))
+        dispatch(setMessages([]))
+        dispatch(setcollapsed(false))
         dispatch(setstatus(false))
+        dispatch(friend_requests("friends"))
+        dispatch(setcontacts({ friends: [], groups: [] }))
     }
 
     return (

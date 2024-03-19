@@ -3,7 +3,8 @@ import axios from 'axios'
 import { socket } from '../socket-connection/socket'
 import { useSelector, useDispatch } from 'react-redux'
 import { appendMessages, setMessages } from '../store/slices/presentchatslice'
-import { BASE_URL } from '../services/Api'
+import LogoUrl, { BASE_URL } from '../services/Api'
+
 import '../styles/messagebox.css'
 
 const Messagebox = () => {
@@ -24,12 +25,6 @@ const Messagebox = () => {
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
   };
-
-
-  const image_url = (url) => {
-    const imageURL = BASE_URL + url.substring(7)
-    return imageURL
-  }
 
   useEffect(() => {
     socket.on("send_message", (data) => {
@@ -64,13 +59,13 @@ const Messagebox = () => {
   return (
     <div id="messages-container" className='messagebox'>
       {presentChat.messages.map((message) => (
-        <div className={`msg ${user === message.username ? "right" : "left"}`} key={message.key}>
-          <div className='logo'><img src={presentChat.profilePic} /></div>
-          <div className='msgdetails'>
-            {presentChat.type === "friends" ? <></> : <span className='msg-username'>{message.username} </span>}
+        <div className={`msg ${user === message.username.name ? "right" : "left"}`} key={message.key}>
+          <div className='logo'><img src={LogoUrl(message.username.profile)} /></div>
+          <div className={`msgdetails ${user === message.username.name ? "right-details" : "left-details"}`}>
+            {presentChat.type === "friends" ? <></> : <span className='msg-username'>{message.username.name} </span>}
             <div className={`msg-content ${message.typing ? "typing" : ""}`}>
-            {message.image && <div className='msg-image'><img src={image_url(message.image)}/></div>}
-            <span className={`msg-message ${user === message.username? "right-msg" : "left-msg"}`}>{message.message}</span>
+            {message.image && <div className='msg-image'><img src={LogoUrl(message.image)}/></div>}
+            <span className={`msg-message ${user === message.username.name? "right-msg" : "left-msg"}`}>{message.message}</span>
             </div>
             <span className='timestamp'>{message.timestamp.date}<br/>{message.timestamp.time}</span>
           </div>

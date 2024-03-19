@@ -20,7 +20,6 @@ const Messagebar = () => {
   const isTyping = useSelector(state => state.isTyping.status)
   const dispatch = useDispatch()
 
-  console.log(image)
   const send_message = () => {
     if (message||image) {
       const formData = new FormData();

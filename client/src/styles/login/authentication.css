@@ -1,6 +1,25 @@
 .top_half {
   background-color: #04a784;
   height: 30%;
+  justify-content: center;
+  display: flex;
+}
+.top_half>*{
+  margin: 18px 5px;
+}
+.top_half>span{
+  color: white;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: xx-large;
+}
+
+.top_half>img{
+  background-color: #04a784;
+  height: 40px;
+  width: 40px;
 }
 
 .bottom_half {
@@ -12,7 +31,7 @@
   display: flex;
   flex-direction: column;
   position: fixed;
-  height: 85%;
+  height: 80%;
   width: 70vw;
   background-color: #ffffff;
   top: 50%;
@@ -33,4 +52,10 @@
   transform: translate(-50%, 0%);
   margin: auto 0px;
 padding: 20px 0px;
+}
+
+@media screen and (max-width:800px){
+  .options{
+    padding:45px 0px;
+  }
 }

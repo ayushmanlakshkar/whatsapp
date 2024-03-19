@@ -12,6 +12,15 @@
 
 .right {
   margin-left: auto;
+  
+}
+
+.right-details{
+  background-color: #015C4B;
+}
+
+.left-details{
+  background-color: #1F2C33;
 }
 
 .right > .logo {
@@ -37,7 +46,6 @@
 }
 
 .msgdetails {
-  background-color: rgb(31, 44, 51);
   padding: 10px;
   border-radius: 10px;
   margin: 3px 10px;
@@ -45,6 +53,7 @@
 
 .msg-username {
   font-size: larger;
+  font-weight: 500;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   color: greenyellow;
 }
@@ -59,7 +68,7 @@
 
 .timestamp {
   float: right;
-  color: rgb(127, 145, 154);
+  color: #A3BEB7;
 }
 
 @keyframes typingAnimation {

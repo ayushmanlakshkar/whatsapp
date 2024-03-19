@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import Sing_up from './Sing_up';
-import Login_in from './Login_in';
+import Sing_up from '../Sing_up';
+import Login_in from '../Login_in';
 import { Tabs, Tab, Box, Divider } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import '../styles/authentication.css'
+import LogoUrl from '../../services/Api';
+import '../styles/login/authentication.css'
 
 const theme = createTheme(); 
 
@@ -13,10 +14,11 @@ function Authentication() {
   const handleChange = (e,value) => {
     setFormoption(value)
   }
+  
 
   return (
     <ThemeProvider theme={theme}>
-      <div className='top_half'></div>
+      <div className='top_half'><img src={LogoUrl('public/groupPictures/whatsapp.png')}/><span> Whatapp</span></div>
       <div className='bottom_half'></div>
       <div className='middle'>
         <div className='options'>

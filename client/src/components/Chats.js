@@ -13,25 +13,16 @@ const Chats = () => {
   const username = useSelector(state=>state.user.username)
     const dispatch = useDispatch()
 
-    const windowsizing =()=>{
-      if (window.innerWidth <= 800) {
-        dispatch(setcollapsed(true))
-    } else {
-        dispatch(setcollapsed(false))
-    }
-    }
-  
     useEffect(()=>{
-      window.addEventListener('resize',windowsizing)
       window.addEventListener('popstate',()=>{
         socket.emit("user_logout",{username})
         localStorage.removeItem('token')
-        dispatch(setuser_details({ username: "" }))
+        dispatch(setuser_details({ username: "",friend_requests: [] ,profile:""}))
         dispatch(setstatus(false))
       })
     
-
     },[])
+
 
   return (
     <div className='chatpage'>

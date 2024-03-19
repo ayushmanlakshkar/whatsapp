@@ -2,3 +2,18 @@
     height: 100%;
     width: 100%;
 }
+
+.contactpanel-open{
+    display: grid;
+    grid-template-rows:1fr 8fr;
+    width: 38%;
+    height: 100%;
+    max-height: 100%;
+    background-color: #111B21;
+}
+
+@media only screen and (max-width:800px) {
+    .contactpanel-open{
+        width: 100%;
+    }
+}

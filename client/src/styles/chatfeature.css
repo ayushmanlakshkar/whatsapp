@@ -16,13 +16,31 @@
 }
 
 .chatfeature-chatname{
-    margin: auto;
-    grid-column-start: 2;
+    margin: auto 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.chat-profile{
+   display: flex;
+   align-items: center;
+}
+
+.chat-profile>img{
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+}
+
+.chatname{
+    margin: auto 10px;
 }
 
 .leave_button{
     height: fit-content;
     /* width: fit-content; */
+    grid-column-start: 3;
     margin: auto;
 }
 

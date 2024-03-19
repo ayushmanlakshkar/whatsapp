@@ -11,7 +11,7 @@ const get_Messages = async (req, res) => {
         const rearrange_messages = messages.map((message) => {
             return {
                 key: message._id,
-                username: message.sender.username,
+                username: {name:message.sender.username,profile:message.sender.profile},
                 message: message.message,
                 image: message.image,
                 timestamp: formatTimestamp(message.createdAt)
@@ -25,7 +25,7 @@ const get_Messages = async (req, res) => {
         const rearrange_messages = messages.map((message) => {
             return {
                 key: message._id,
-                username: message.sender.username,
+                username: {name:message.sender.username,profile:message.sender.profile},
                 message: message.message,
                 image:message.image,
                 timestamp: formatTimestamp(message.createdAt)
@@ -48,7 +48,7 @@ const send_Message = async (req, res) => {
         })
         const rearrange_message={
             key: message._id,
-            username:sender.username,
+            username:{name:sender.username,profile:sender.profile},
             message: message.message,
             image:message.image,
             timestamp: formatTimestamp(message.createdAt)
@@ -66,7 +66,7 @@ const send_Message = async (req, res) => {
         })
         const rearrange_message={
             key: message._id,
-            username:sender.username,
+            username:{name:sender.username,profile:sender.profile},
             message: message.message,
             image:message.image,
             timestamp: formatTimestamp(message.createdAt)

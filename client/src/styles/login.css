@@ -34,17 +34,21 @@
 }
 
 .profile_picture{
-    color: white;
-    background-color: grey;
-    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    width: 60px;
     padding: 8px;
-    border-radius: 10px;
+    border-radius: 50%;
+    border: 2px solid black;
     font-weight: bold;
 }
 
 .profile_picture:hover{
+    color: white;
+    background-color: black;
     cursor: pointer;
-background-color:#3C425F;
 }
 
 .image_shower{

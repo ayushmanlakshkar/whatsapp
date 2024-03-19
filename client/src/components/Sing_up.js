@@ -10,8 +10,8 @@ import { setcontacts } from '../store/slices/contactslice';
 import { ToastContainer } from 'react-toastify';
 import { setToastMessage } from '../store/slices/toastSlice';
 import { useNavigate } from 'react-router-dom';
-import { setchat } from '../store/slices/chatslice';
 import { BASE_URL } from '../services/Api';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Sing_up = () => {
   const user = useSelector((state) => state.user.username)
@@ -53,15 +53,12 @@ const Sing_up = () => {
   return (
     <Box id='box' component='form' onSubmit={submit}>
       <div className='profile'>
-      {profile && (
-        <img
+     <label className='profile_picture' htmlFor="profile-input">
+     {profile?<img
           src={URL.createObjectURL(profile)}
           alt="Profile"
           className='image_shower'
-        />
-      )}
-     <label className='profile_picture' htmlFor="profile-input">
-        Choose profile picture
+        />:<AccountCircleIcon sx={{width:100,height:100}}/>}
         <input
           type="file"
           id="profile-input"

@@ -20,7 +20,8 @@ function ProtectedRoute({ Component }) {
             Authorization: 'Bearer ' + token
         }
         await axios.post(`${BASE_URL}auth/token_login`, { username, headers }).then((response) => {
-            dispatch(setuser_details({ username }))
+            console.log(response.data)
+            dispatch(setuser_details({username:response.data.username,profile:response.data.profile }))
             dispatch(setstatus(true))
             socket.emit('user_login', { username })
             socket.emit("user_online", { username })

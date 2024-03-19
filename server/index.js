@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const User = require('./models/usermodel')
 const Group = require('./models/groupmodel')
 const Message = require('./models/messagemodel')
-
 const dotenv = require('dotenv');
 const cors = require('cors');
 const authroutes = require('./routes/authroutes')
@@ -25,7 +24,7 @@ app.use(express.static('public'))
 
 const io = new Server(server,{
     cors: {
-        origin: 'https://ayushmanwhatsappclone.netlify.app',
+        origin: 'http://localhost:3000/',
         methods: ['GET', 'POST']
     }
 });

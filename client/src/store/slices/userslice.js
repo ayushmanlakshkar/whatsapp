@@ -4,15 +4,20 @@ const userslice = createSlice({
     name: 'user_details',
     initialState: {
         username :'',
-        friend_requests:[]
+        friend_requests:[],
+        profile: ''
     },
     reducers:{
         setuser_details(state,action){
+            console.log(action.payload)
             if(action.payload.username){
                 state.username = action.payload.username
             }
             if(action.payload.friend_requests){
                 state.friend_requests = [...action.payload.friend_requests]
+            }
+            if(action.payload.profile){
+                state.profile = action.payload.profile
             }
         }
     }

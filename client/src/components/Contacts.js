@@ -12,7 +12,7 @@ import { setChatname } from '../store/slices/presentchatslice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setToastMessage } from '../store/slices/toastSlice';
-import { BASE_URL } from '../services/Api';
+import LogoUrl, { BASE_URL } from '../services/Api';
 
 
 const Contacts = () => {
@@ -79,11 +79,6 @@ const Contacts = () => {
     })
   }
 
-const logo_url = (url)=>{
-   const logoURL= BASE_URL+ url.substring(7)
-   console.log(logoURL)
-    return logoURL
-}
 
 
   useEffect(() => {
@@ -122,8 +117,8 @@ const logo_url = (url)=>{
     <div className='contact-list'>
       {temporary_contacts.length > 0 ? (
         temporary_contacts.map((contact) => (
-          <div className={`contact ${presentChatname == contact.name ? 'chatting' : ''}`} key={contact.name} onClick={() => { { friend_req_options.friends ? dispatch(setChatname({ chatname: contact.name, type: key ,profilePic:logo_url(contact.profile)})) : <></> } }}>
-            <div className='contact-logo'><img src={logo_url(contact.profile)} /></div>
+          <div className={`contact ${presentChatname == contact.name ? 'chatting' : ''}`} key={contact.name} onClick={() => { { friend_req_options.friends ? dispatch(setChatname({ chatname: contact.name, type: key , profilePic:contact.profile})) : <></> } }}>
+            <div className='contact-logo'><img src={LogoUrl(contact.profile)} /></div>
             <span className='contact-name'>{contact.name}</span>
             {contact.isOnline && <span className='online-container'> <span className='online-icon'></span><span>online</span> </span>}
             {friend_req_options.add_friend ?

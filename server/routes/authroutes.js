@@ -19,5 +19,6 @@ const upload = multer({ storage: storage })
 router.post('/register',upload.single('profile'), authmiddleware, authcontroller.registerUser );
 router.post('/login',authcontroller.loginUser );
 router.post('/token_login', authcontroller.tokenLogin)
+router.get('/check', authcontroller.check)
 module.exports = router;
 

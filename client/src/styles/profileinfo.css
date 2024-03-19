@@ -1,0 +1,15 @@
+.profile-info-panel {
+    height: 100%;
+    width: 100%;
+  }
+  .profilePicture {
+  }
+  .profilePicture>img{
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    margin: auto auto;
+  }
+  
+  .username {
+  }
