@@ -27,7 +27,7 @@ const registerUser = async (req, res, next) => {
 
         res.send({ message: `User created successfully: ${username}`, token, username: username, profile: user.profile });
     } catch (error) {
-        next(error)
+        return res.status(400).send(error)
     }
 
 }
@@ -47,7 +47,7 @@ const loginUser = async (req, res, next) => {
         res.send({ message: "User logged in", token, username: user.username, profile: user.profile })
     }
     catch (error) {
-        next(error)
+        return res.status(400).send(error)
     }
 }
 
